@@ -1,0 +1,59 @@
+:root {
+	--container-width: 1200px;
+
+	/* Font Sizes */
+	--fs-base-size: 1em;
+	--text-scale-ratio: 1.2;
+
+	--fs-sm: calc(1em / var(--text-scale-ratio));
+	--fs-md: calc(1em * var(--text-scale-ratio));
+	--fs-lg: calc(var(--fs-md) * var(--text-scale-ratio));
+	--fs-xl: calc(var(--fs-lg) * var(--text-scale-ratio));
+	--fs-xxl: calc(var(--fs-xl) * var(--text-scale-ratio));
+	--fs-xxxl: calc(var(--fs-xxl) * var(--text-scale-ratio));
+
+	/* Font Weights */
+	--fw-normal: 400;
+	--fw-semi-bold: 600;
+	--fw-bold: 700;
+
+	/* Spacing */
+	--space-xxs: 4px;
+	--space-xs: 8px;
+	--space-sm: 12px;
+	--space-md: 20px;
+	--space-lg: 32px;
+	--space-xl: 52px;
+	--space-xxl: 84px;
+}
+
+@mixin container {
+	max-width: var(--container-width);
+	margin: 0 auto;
+}
+
+*,
+*::before,
+*::after {
+	margin: 0;
+}
+
+html {
+	min-height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+body {
+	flex-grow: 1;
+	font-family: 'Outfit', sans-serif;
+	text-align: center;
+}
+
+.board {
+	margin-top: var(--space-lg);
+}
+
+form {
+	margin-top: var(--space-lg);
+}
