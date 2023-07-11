@@ -51,7 +51,17 @@ body {
 }
 
 .board {
+    width: fit-content;
+    margin : 0 auto;
 	margin-top: var(--space-lg);
+    display: grid;
+    gap: 1px;
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(3, 100px);
+}
+
+.cell{
+    border: 1px solid black;
 }
 
 form {
