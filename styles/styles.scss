@@ -106,3 +106,10 @@ header {
 		}
 	}
 }
+
+footer {
+	margin-top: var(--space-lg);
+	img {
+		width: var(--space-md);
+	}
+}
