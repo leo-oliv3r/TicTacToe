@@ -69,6 +69,11 @@ header {
 	.cell {
 		background-color: #fff;
 		cursor: pointer;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-size: var(--fs-xxxl);
+		font-weight: var(--fw-bold);
 
 		&:hover {
 			background-color: #f2f2f2;

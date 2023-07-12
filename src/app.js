@@ -17,7 +17,15 @@ function boardModel() {
 
 	const getBoard = () => board;
 
-	return { getBoard };
+	const dropToken = (index, player) => {
+		if (board[index] !== '') {
+			return false;
+		}
+		board[index] = player.getToken();
+		return true;
+	};
+
+	return { getBoard, dropToken };
 }
 
 function gameController(playerOneName, playerTwoName) {
@@ -33,10 +41,21 @@ function gameController(playerOneName, playerTwoName) {
 
 	const getActivePlayer = () => activePlayer;
 
-	return { getBoard: board.getBoard, getActivePlayer, switchActivePlayer };
+	const makePlay = (index) => {
+		if (board.dropToken(index, activePlayer)) {
+			switchActivePlayer();
+		}
+	};
+
+	return {
+		getBoard: board.getBoard,
+		makePlay,
+		getActivePlayer,
+	};
 }
 
 function viewControl() {
+	let cells;
 	let controller;
 	const modal = document.querySelector('.modal');
 	const boardElement = document.querySelector('.board');
@@ -44,20 +63,32 @@ function viewControl() {
 	const activePlayerDisplay = document.querySelector(`.active-player-display`);
 
 	const printBoardToScreen = () => {
-		controller.getBoard().forEach((cell) => {
-			/* The active class gives the board a black background, that whith the gap of the grid
-			creates the effect of the tic-tac-toe board. */
+		controller.getBoard().forEach((cell, index) => {
+			/* The active class gives the board a black background, that with the gap of the grid
+			creates the effect of a tic-tac-toe board. */
 			boardElement.classList.add('active');
-			boardElement.innerHTML += `<div class="cell">${cell}</div>`;
+			boardElement.innerHTML += `<div class="cell" id="${index}">${cell}</div>`;
 		});
-	};
-
-	const toggleModal = () => {
-		modal.classList.toggle('active');
 	};
 
 	const updateActivePlayerDisplay = () => {
 		activePlayerDisplay.innerText = `${controller.getActivePlayer().getName()}'s turn!`;
+	};
+
+	const updateBoard = () => {
+		const board = controller.getBoard();
+		cells.forEach((cell) => {
+			cell.innerText = board[cell.id];
+		});
+		updateActivePlayerDisplay();
+	};
+
+	const makePlay = (e) => {
+		const index = e.target.id;
+		const activePlayer = controller.getActivePlayer();
+		controller.makePlay(index, activePlayer);
+
+		updateBoard();
 	};
 
 	const createGame = (event) => {
@@ -69,12 +100,14 @@ function viewControl() {
 		const playerOneName = formDataObj.playerOneName;
 		const playerTwoName = formDataObj.playerTwoName;
 
+		modal.classList.remove('active');
+
 		controller = gameController(playerOneName, playerTwoName);
-		toggleModal();
 		printBoardToScreen();
 		updateActivePlayerDisplay();
+		cells = document.querySelectorAll('.cell');
+		cells.forEach((cell) => cell.addEventListener('click', makePlay));
 	};
-
 	form.addEventListener('submit', createGame);
 }
 
