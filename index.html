@@ -17,19 +17,22 @@
 		<header>
 			<h1>Tic-Tac-Toe</h1>
 		</header>
-
-		<div class="board"></div>
+		
+		<div class="game-area">
+			<h3 class="active-player-display"></h3>
+			<div class="board"></div>
+		</div>
 
 		<div class="modal active">
 			<form class="player-names-form">
-				<label for="playerOne">Player X Name</label>
+				<label for="playerOne">Player X</label>
 				<input
 					type="text"
 					id="playerOne"
 					name="playerOneName"
 					placeholder="Name"
 					required />
-				<label for="playerTwo">Player O Name</label>
+				<label for="playerTwo">Player O</label>
 				<input
 					type="text"
 					id="playerTwo"

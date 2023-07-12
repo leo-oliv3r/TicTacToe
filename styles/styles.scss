@@ -69,10 +69,13 @@ header {
 }
 
 .modal {
+	padding: var(--space-md);
+	border-radius: var(--space-sm);
+	background-color: #e0e0e0;
 	width: max(200px, 30%);
 	position: fixed;
 	z-index: 1;
-	top: 40%;
+	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%) scale(0);
 
@@ -91,19 +94,20 @@ header {
 		}
 
 		input {
+			text-transform: capitalize;
 			height: var(--space-lg);
 			border: 1px solid black;
 			border-radius: var(--space-xs);
 			padding-left: var(--space-xxs);
 		}
+	}
 
-		button {
-			padding: var(--space-xxs);
-			margin-top: var(--space-lg);
-			width: 50%;
-			align-self: center;
-			cursor: pointer;
-		}
+	button {
+		padding: var(--space-xxs);
+		margin-top: var(--space-lg);
+		width: 50%;
+		align-self: center;
+		cursor: pointer;
 	}
 }
 

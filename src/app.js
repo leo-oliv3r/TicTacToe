@@ -20,7 +20,15 @@ function gameController(playerOneName, playerTwoName) {
 	const playerOne = Player(playerOneName, 'X');
 	const playerTwo = Player(playerTwoName, 'O');
 
-	return { getBoard: board.getBoard };
+	let activePlayer = playerOne;
+
+	const switchActivePlayer = () => {
+		activePlayer = activePlayer === playerOne ? playerTwo : playerOne;
+	};
+
+	const getActivePlayer = () => activePlayer;
+
+	return { getBoard: board.getBoard, getActivePlayer, switchActivePlayer };
 }
 
 function viewControl() {
@@ -28,6 +36,7 @@ function viewControl() {
 	const modal = document.querySelector('.modal');
 	const boardElement = document.querySelector('.board');
 	const form = document.querySelector('.player-names-form');
+	const activePlayerDisplay = document.querySelector(`.active-player-display`);
 
 	const printBoardToScreen = () => {
 		controller.getBoard().forEach((cell) => {
@@ -37,6 +46,10 @@ function viewControl() {
 
 	const toggleModal = () => {
 		modal.classList.toggle('active');
+	};
+
+	const updateActivePlayerDisplay = () => {
+		activePlayerDisplay.innerText = `${controller.getActivePlayer().getName()}'s turn!`;
 	};
 
 	const createGame = (event) => {
@@ -51,6 +64,7 @@ function viewControl() {
 		controller = gameController(playerOneName, playerTwoName);
 		toggleModal();
 		printBoardToScreen();
+		updateActivePlayerDisplay();
 	};
 
 	form.addEventListener('submit', createGame);
