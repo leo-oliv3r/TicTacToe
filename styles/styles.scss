@@ -59,17 +59,19 @@ header {
 	margin: 0 auto;
 	margin-top: var(--space-lg);
 	display: grid;
-	gap: 1px;
+	gap: 2px;
 	grid-template-columns: repeat(3, 100px);
 	grid-template-rows: repeat(3, 100px);
-	box-shadow: rgba(0, 0, 0, 0.15) 3px 4px 2.5px;
 
+	&.active {
+		background-color: black;
+	}
 	.cell {
-		border: 1px solid black;
+		background-color: #fff;
 		cursor: pointer;
 
 		&:hover {
-			border: 2px solid black;
+			background-color: #f2f2f2;
 		}
 	}
 }

@@ -45,6 +45,9 @@ function viewControl() {
 
 	const printBoardToScreen = () => {
 		controller.getBoard().forEach((cell) => {
+			/* The active class gives the board a black background, that whith the gap of the grid
+			creates the effect of the tic-tac-toe board. */
+			boardElement.classList.add('active');
 			boardElement.innerHTML += `<div class="cell">${cell}</div>`;
 		});
 	};
