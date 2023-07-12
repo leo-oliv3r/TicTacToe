@@ -62,10 +62,16 @@ header {
 	gap: 1px;
 	grid-template-columns: repeat(3, 100px);
 	grid-template-rows: repeat(3, 100px);
-}
+	box-shadow: rgba(0, 0, 0, 0.15) 3px 4px 2.5px;
 
-.cell {
-	border: 1px solid black;
+	.cell {
+		border: 1px solid black;
+		cursor: pointer;
+
+		&:hover {
+			border: 2px solid black;
+		}
+	}
 }
 
 .modal {
