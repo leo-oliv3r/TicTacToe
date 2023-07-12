@@ -14,27 +14,20 @@
 		<title>Tic-Tac-Toe</title>
 	</head>
 	<body>
-		<h1>Tic-Tac-Toe</h1>
+		<header>
+			<h1>Tic-Tac-Toe</h1>
+		</header>
 
-		<div class="board">
-			<div class="cell"></div>
-			<div class="cell"></div>
-			<div class="cell"></div>
-			<div class="cell"></div>
-			<div class="cell"></div>
-			<div class="cell"></div>
-			<div class="cell"></div>
-			<div class="cell"></div>
-			<div class="cell"></div>
+		<div class="board"></div>
+
+		<div class="modal active">
+			<form class="player-names-form">
+				<label for="playerOne">Player X Name</label>
+				<input type="text" id="playerOne" name="playerOneName" placeholder="Name" required />
+				<label for="playerTwo">Player O Name</label>
+				<input type="text" id="playerTwo" name="playerTwoName" placeholder="Name" required />
+				<button class="start-game-btn">Start Game</button>
+			</form>
 		</div>
-
-		<form>
-			<label for="playerOne">Player One</label>
-			<input type="text" id="playerOne" />
-
-			<label for="playerTwo">PlayerTwo</label>
-			<input type="text" id="playerTwo" />
-			<button role="button">Play Game</button>
-		</form>
 	</body>
 </html>
