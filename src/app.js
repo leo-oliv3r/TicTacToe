@@ -17,6 +17,8 @@ function boardModel() {
 
 	const getBoard = () => board;
 
+	const getCell = (index) => board[index];
+
 	const dropToken = (index, player) => {
 		if (board[index] !== '') {
 			return false;
@@ -25,13 +27,25 @@ function boardModel() {
 		return true;
 	};
 
-	return { getBoard, dropToken };
+	return { getBoard, dropToken, getCell };
 }
 
 function gameController(playerOneName, playerTwoName) {
+	let round = 1;
 	const board = boardModel();
 	const playerOne = Player(playerOneName, 'X');
 	const playerTwo = Player(playerTwoName, 'O');
+
+	const winnerCombinations = [
+		[0, 1, 2],
+		[3, 4, 5],
+		[6, 7, 8],
+		[0, 3, 6],
+		[1, 4, 7],
+		[2, 5, 8],
+		[0, 4, 8],
+		[2, 4, 6],
+	];
 
 	let activePlayer = playerOne;
 
@@ -41,16 +55,43 @@ function gameController(playerOneName, playerTwoName) {
 
 	const getActivePlayer = () => activePlayer;
 
+	const checkForWin = (index) => {
+		const possibleCombinatios = winnerCombinations.filter((combinations) =>
+			combinations.includes(index)
+		);
+
+		const isWinnerCombination = possibleCombinatios.some((combinations) =>
+			combinations.every(
+				(cell) => board.getCell(cell) === activePlayer.getToken()
+			)
+		);
+
+		return isWinnerCombination;
+	};
+
 	const makePlay = (index) => {
 		if (board.dropToken(index, activePlayer)) {
+			if (checkForWin(index)) {
+				return 'win';
+			}
+			round += 1;
+			if (round > 9) {
+				return 'draw';
+			}
 			switchActivePlayer();
 		}
+	};
+
+	const resetGame = () => {
+		board.forEach((cell) => (cell = ''));
+		activePlayer = playerOne;
 	};
 
 	return {
 		getBoard: board.getBoard,
 		makePlay,
 		getActivePlayer,
+		resetGame,
 	};
 }
 
@@ -60,7 +101,11 @@ function viewControl() {
 	const modal = document.querySelector('.modal');
 	const boardElement = document.querySelector('.board');
 	const form = document.querySelector('.player-names-form');
-	const activePlayerDisplay = document.querySelector(`.active-player-display`);
+	const activePlayerDisplay = document.querySelector(
+		`.active-player-display`
+	);
+	const endgameBanner = document.querySelector('.winner-banner');
+	const resetButton = document.querySelector('.reset-btn');
 
 	const printBoardToScreen = () => {
 		controller.getBoard().forEach((cell, index) => {
@@ -72,7 +117,32 @@ function viewControl() {
 	};
 
 	const updateActivePlayerDisplay = () => {
-		activePlayerDisplay.innerText = `${controller.getActivePlayer().getName()}'s turn!`;
+		activePlayerDisplay.innerText = `${controller
+			.getActivePlayer()
+			.getName()}'s "${controller.getActivePlayer().getToken()}" turn!`;
+	};
+
+	const displayResult = (condition) => {
+		activePlayerDisplay.classList.add('hidden');
+		resetButton.classList.remove('hidden');
+
+		cells.forEach((cell) =>
+			cell.removeEventListener('click', makePlayView)
+		);
+		switch (condition) {
+			case 'win':
+				endgameBanner.innerText = `Congratulations! ${controller
+					.getActivePlayer()
+					.getName()} has won!`;
+				break;
+
+			case 'draw':
+				endgameBanner.innerText = "It's a draw!";
+				break;
+
+			default:
+				break;
+		}
 	};
 
 	const updateBoard = () => {
@@ -83,11 +153,21 @@ function viewControl() {
 		updateActivePlayerDisplay();
 	};
 
-	const makePlay = (e) => {
-		const index = e.target.id;
-		const activePlayer = controller.getActivePlayer();
-		controller.makePlay(index, activePlayer);
+	const makePlayView = (e) => {
+		const index = Number(e.target.id);
 
+		switch (controller.makePlay(index)) {
+			case 'win':
+				displayResult('win');
+				break;
+
+			case 'draw':
+				displayResult('draw');
+				break;
+
+			default:
+				break;
+		}
 		updateBoard();
 	};
 
@@ -106,9 +186,21 @@ function viewControl() {
 		printBoardToScreen();
 		updateActivePlayerDisplay();
 		cells = document.querySelectorAll('.cell');
-		cells.forEach((cell) => cell.addEventListener('click', makePlay));
+		cells.forEach((cell) => cell.addEventListener('click', makePlayView));
 	};
+
+	const resetGame = () => {
+		modal.classList.add('active');
+		boardElement.innerHTML = '';
+		endgameBanner.innerHTML = ``;
+		boardElement.classList.remove('active');
+		activePlayerDisplay.classList.remove('hidden');
+		resetButton.classList.add('hidden');
+		controller.resetGame();
+	};
+
 	form.addEventListener('submit', createGame);
+	resetButton.addEventListener(`click`, resetGame);
 }
 
 viewControl();
