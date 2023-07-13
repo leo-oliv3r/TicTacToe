@@ -83,7 +83,7 @@ function gameController(playerOneName, playerTwoName) {
 	};
 
 	const resetGame = () => {
-		board.forEach((cell) => (cell = ''));
+		board.getBoard().forEach((cell) => (cell = ''));
 		activePlayer = playerOne;
 	};
 
@@ -192,9 +192,9 @@ function viewControl() {
 	const resetGame = () => {
 		modal.classList.add('active');
 		boardElement.innerHTML = '';
-		endgameBanner.innerHTML = ``;
+		endgameBanner.innerText = '';
+		activePlayerDisplay.innerText = '';
 		boardElement.classList.remove('active');
-		activePlayerDisplay.classList.remove('hidden');
 		resetButton.classList.add('hidden');
 		controller.resetGame();
 	};
